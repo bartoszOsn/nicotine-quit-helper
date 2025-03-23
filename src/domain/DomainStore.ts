@@ -12,13 +12,24 @@ export class DomainStore extends Store {
     override lastPouchUsedAt$: Observable<Date> = EMPTY;
     override currentPouchState$: Observable<CurrentPouchState> = EMPTY;
 
-	private readonly selectedDaySubject = new BehaviorSubject<Date>(new Date());
+	private selectedDay: Date = new Date();
+	private readonly selectedDaySubject = new BehaviorSubject<Date>(this.selectedDay);
 
     override setSelectedDay(day: Date): Observable<void> {
+		this.selectedDay = day;
         this.selectedDaySubject.next(day);
 		return of(void 0);
     }
-    override setLimitForDay(day: Date, limit: number): Observable<void> {
+	override previousDay(): Observable<void> {
+		const previousDay = new Date(this.selectedDay.getTime() - 24 * 60 * 60 * 1000);
+		return this.setSelectedDay(previousDay);
+	}
+	override nextDay(): Observable<void> {
+		const nextDay = new Date(this.selectedDay.getTime() + 24 * 60 * 60 * 1000);
+		return this.setSelectedDay(nextDay);
+	}
+
+	override setLimitForDay(day: Date, limit: number): Observable<void> {
         return EMPTY;
     }
     override usePouch(): Observable<void> {
