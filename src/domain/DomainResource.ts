@@ -1,4 +1,4 @@
-import { PouchUsage } from './model/PouchUsage';
+import { PouchUsage } from '../api/model/PouchUsage';
 import { Observable } from 'rxjs';
 
 export abstract class DomainResource {

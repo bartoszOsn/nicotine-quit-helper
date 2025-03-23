@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { DomainResource } from '../domain/DomainResource';
-import { PouchUsage } from '../domain/model/PouchUsage';
+import { PouchUsage } from '../api/model/PouchUsage';
 import { Observable, switchMap } from 'rxjs';
 import { PouchLimitPerDayDao } from './dao/PouchLimitPerDayDao';
 import { PouchUsageDao } from './dao/PouchUsageDao';
