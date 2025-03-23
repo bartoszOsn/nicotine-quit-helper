@@ -54,10 +54,44 @@ export class IndexedDbResource extends DomainResource {
     }
 
     override fetchPouchUsageForDay(day: Date): Observable<Array<PouchUsage>> {
-        throw new Error('Method not implemented.');
+		const dayString = day.toISOString().split('T')[0];
+
+		return this.selectDb()
+			.pipe(
+				switchMap(db => new Observable<Array<PouchUsage>>(observer => {
+					const transaction = db.transaction(this.POUCH_LIMIT_STORE, 'readonly');
+					const store = transaction.objectStore(this.POUCH_LIMIT_STORE);
+					const request = store.getAll() as IDBRequest<Array<PouchLimitPerDayDao>>;
+					request.onsuccess = () => {
+						observer.next(
+							this.daoToPoachUsageArray(request.result.filter(dao => dao.day.startsWith(dayString)))
+						);
+						observer.complete();
+					};
+					request.onerror = () => {
+						observer.error(request.error);
+						observer.complete();
+					};
+				}))
+			);
     }
     override addPouchUsageForDay(usage: PouchUsage): Observable<void> {
-        throw new Error('Method not implemented.');
+		return this.selectDb()
+			.pipe(
+				switchMap(db => new Observable<void>(observer => {
+					const transaction = db.transaction(this.POUCH_LIMIT_STORE, 'readwrite');
+					const store = transaction.objectStore(this.POUCH_LIMIT_STORE);
+					const request = store.put(this.pouchUsageToDao(usage));
+					request.onsuccess = () => {
+						observer.next();
+						observer.complete();
+					};
+					request.onerror = () => {
+						observer.error(request.error);
+						observer.complete();
+					};
+				}))
+			);
     }
 
 	private selectDb(): Observable<IDBDatabase> {
@@ -83,5 +117,13 @@ export class IndexedDbResource extends DomainResource {
 				pouchUsageStore.createIndex(pouchUsageKeyPath, pouchUsageKeyPath, {unique: true});
 			}
 		});
+	}
+
+	private daoToPoachUsageArray(dao: Array<PouchLimitPerDayDao>): Array<PouchUsage> {
+		return dao.map(d => ({ dateTime: new Date(d.day) }));
+	}
+
+	private pouchUsageToDao(usage: PouchUsage): PouchUsageDao {
+		return { dateTime: usage.dateTime.toISOString() };
 	}
 }
