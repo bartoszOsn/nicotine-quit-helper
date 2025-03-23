@@ -3,6 +3,7 @@ import { DomainResource } from '../domain/DomainResource';
 import { PouchUsage } from '../domain/model/PouchUsage';
 import { Observable, switchMap } from 'rxjs';
 import { PouchLimitPerDayDao } from './dao/PouchLimitPerDayDao';
+import { PouchUsageDao } from './dao/PouchUsageDao';
 
 @Injectable()
 export class IndexedDbResource extends DomainResource {
@@ -73,11 +74,13 @@ export class IndexedDbResource extends DomainResource {
 			request.onupgradeneeded = (event) => {
 				const db = request.result;
 
-				const pouchLimitStore = db.createObjectStore(this.POUCH_LIMIT_STORE, {keyPath: 'day'});
-				pouchLimitStore.createIndex('day', 'day', {unique: true});
+				const pouchLimitKeyPath: keyof PouchLimitPerDayDao = 'day';
+				const pouchLimitStore = db.createObjectStore(this.POUCH_LIMIT_STORE, {keyPath: pouchLimitKeyPath});
+				pouchLimitStore.createIndex(pouchLimitKeyPath, pouchLimitKeyPath, {unique: true});
 
-				const pouchUsageStore = db.createObjectStore(this.POUCH_USAGE_STORE, {keyPath: 'dateTime'});
-				pouchUsageStore.createIndex('dateTime', 'dateTime', {unique: true});
+				const pouchUsageKeyPath: keyof PouchUsageDao = 'dateTime';
+				const pouchUsageStore = db.createObjectStore(this.POUCH_USAGE_STORE, {keyPath: pouchUsageKeyPath});
+				pouchUsageStore.createIndex(pouchUsageKeyPath, pouchUsageKeyPath, {unique: true});
 			}
 		});
 	}
