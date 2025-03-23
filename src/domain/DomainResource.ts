@@ -1,9 +1,10 @@
 import { PouchUsage } from './model/PouchUsage';
+import { Observable } from 'rxjs';
 
 export abstract class DomainResource {
-	abstract fetchPouchLimitForDay(day: Date): Promise<number>;
-	abstract setPouchLimitForDay(day: Date, limit: number): Promise<void>;
+	abstract fetchPouchLimitForDay(day: Date): Observable<number>;
+	abstract setPouchLimitForDay(day: Date, limit: number): Observable<void>;
 
-	abstract fetchPouchUsageForDay(day: Date): Promise<Array<PouchUsage>>;
-	abstract addPouchUsageForDay(usage: PouchUsage): Promise<void>;
+	abstract fetchPouchUsageForDay(day: Date): Observable<Array<PouchUsage>>;
+	abstract addPouchUsageForDay(usage: PouchUsage): Observable<void>;
 }
