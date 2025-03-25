@@ -9,6 +9,8 @@ export abstract class Store {
 	abstract readonly selectedDayTimeState$: Observable<DayTimeState>;
 
 	abstract readonly pouchesUsage$: Observable<Array<PouchUsage>>;
+	abstract readonly suggestedPouchUsage$: Observable<Array<PouchUsage>>;
+	abstract readonly pouchesLeft$: Observable<number>;
 	abstract readonly overLimit$: Observable<boolean>;
 	abstract readonly currentPouchState$: Observable<CurrentPouchState>;
 

@@ -40,6 +40,51 @@ export class DomainStore extends Store {
 			switchMap(([day]) => this.domainResource.fetchPouchUsageForDay(day))
 		);
 
+	override readonly suggestedPouchUsage$: Observable<Array<PouchUsage>> = combineLatest([
+		this.pouchesUsage$,
+		this.pouchLimitForSelectedDay$,
+		defer(() => this.now$)
+	])
+		.pipe(
+			map(([usage, limit, now]) => {
+				if (limit === null) {
+					return [];
+				}
+
+				if (usage.length >= limit) {
+					return [];
+				}
+
+				const pouchesLeft = limit - usage.length;
+				const timeEnd = new Date(now);
+				timeEnd.setHours(23, 59, 59, 999);
+
+				return Array.from({ length: pouchesLeft }).map((_, i) => {
+					const t = i / (pouchesLeft - 1);
+					const time = new Date(now.getTime() + t * (timeEnd.getTime() - now.getTime()));
+					return { dateTime: time };
+				})
+			})
+		);
+
+	override readonly pouchesLeft$: Observable<number> = combineLatest([
+		this.pouchLimitForSelectedDay$,
+		this.pouchesUsage$
+	])
+		.pipe(
+			map(([limit, pouches]) => {
+				if (limit === null) {
+					return 0;
+				}
+
+				if (pouches.length >= limit) {
+					return 0;
+				}
+
+				return limit - pouches.length;
+			})
+		)
+
 	override readonly overLimit$: Observable<boolean> = combineLatest([
 		this.pouchLimitForSelectedDay$,
 		this.pouchesUsage$
