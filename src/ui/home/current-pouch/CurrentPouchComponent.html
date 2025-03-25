@@ -1,0 +1,12 @@
+@let currentPouchState = currentPouchState$ | async;
+
+@if (currentPouchState?.type === 'pouch-used') {
+    <h3>Currently using pouch</h3>
+    <p>Time left: {{$any(currentPouchState).timeLeftInSeconds}}</p>
+} @else if (currentPouchState?.type === 'pouch-ready') {
+    <h3>Your pouch is used up!</h3>
+    <p>You can discard it now.</p>
+    <!-- Add here a logic to ring a bell -->
+} @else {
+    <h3>No pouch used now.</h3>
+}
