@@ -1,14 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { HomeDaySelectorComponent } from './day-selector/HomeDaySelectorComponent';
-import { HomeLimitInputComponent } from './limit-input/HomeLimitInput';
+import { Store } from '../../api/Store';
+import { AsyncPipe } from '@angular/common';
+import { DayTimeState } from '../../api/model/DayTimeState';
+import { PastViewComponent } from './views/past-view/PastViewComponent';
+import { PresentViewComponent } from './views/present-view/PresentViewComponent';
+import { FutureViewComponent } from './views/future-view/FutureViewComponent';
 
 @Component({
 	selector: 'home-root',
 	templateUrl: 'HomeRootComponent.html',
 	imports: [
 		HomeDaySelectorComponent,
-		HomeLimitInputComponent
+		AsyncPipe,
+		PastViewComponent,
+		PresentViewComponent,
+		FutureViewComponent
 	]
 })
 export class HomeRootComponent {
+	private readonly store = inject(Store);
+
+	public readonly selectedDayTimeState$ = this.store.selectedDayTimeState$;
+
+	protected DayTimeState = DayTimeState;
 }

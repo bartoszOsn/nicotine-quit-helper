@@ -1,2 +1,12 @@
 <home-day-selector />
-<home-limit-input />
+@switch (selectedDayTimeState$ | async) {
+    @case (DayTimeState.PAST) {
+        <past-view />
+    }
+    @case (DayTimeState.PRESENT) {
+        <present-view />
+    }
+    @case (DayTimeState.FUTURE) {
+        <future-view />
+    }
+}
