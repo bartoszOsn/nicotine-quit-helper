@@ -4,6 +4,7 @@ import { BehaviorSubject, combineLatest, defer, EMPTY, map, Observable, of, swit
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
 import { DayTimeState } from '../api/model/DayTimeState';
+import { PouchUsage } from '../api/model/PouchUsage';
 
 @Injectable()
 export class DomainStore extends Store {
@@ -28,10 +29,23 @@ export class DomainStore extends Store {
 			})
 		)
 
-    override pouchesUsedSelectedDay$: Observable<number> = EMPTY;
-    override pouchesLeftForSelectedDay$: Observable<number> = EMPTY;
-    override lastPouchUsedAt$: Observable<Date> = EMPTY;
-    override currentPouchState$: Observable<CurrentPouchState> = EMPTY;
+    override readonly pouchesUsage$: Observable<Array<PouchUsage>> = combineLatest([
+		this.selectedDay$,
+		defer(() => this.refreshPouchUsageForSelectedDaySubject)
+	])
+		.pipe(
+			switchMap(([day]) => this.domainResource.fetchPouchUsageForDay(day))
+		);
+
+	override readonly overLimit$: Observable<boolean> = combineLatest([
+		this.pouchLimitForSelectedDay$,
+		this.pouchesUsage$
+	])
+		.pipe(
+			map(([limit, usages]) => limit !== null && usages.length > limit)
+		)
+
+	override readonly currentPouchState$: Observable<CurrentPouchState> = EMPTY;
 
 	private readonly domainResource = inject(DomainResource);
 
@@ -39,6 +53,7 @@ export class DomainStore extends Store {
 	private readonly selectedDaySubject = new BehaviorSubject<Date>(this.selectedDay);
 
 	private readonly refreshPouchLimitForSelectedDaySubject = new BehaviorSubject<void>(void 0);
+	private readonly refreshPouchUsageForSelectedDaySubject = new BehaviorSubject<void>(void 0);
 
     override setSelectedDay(day: Date): Observable<void> {
 		this.selectedDay = day;
@@ -61,7 +76,10 @@ export class DomainStore extends Store {
 		);
     }
     override usePouch(): Observable<void> {
-        return EMPTY;
+		const pouchUsage: PouchUsage = { dateTime: new Date() };
+        return this.domainResource.addPouchUsageForDay(pouchUsage).pipe(
+			tap(() => this.refreshPouchUsageForSelectedDaySubject.next(void 0))
+		);
     }
 
 }

@@ -1,0 +1,17 @@
+<h3>Used pouches</h3>
+
+@let pouchesUsage = pouchesUsage$ | async;
+
+@if (pouchesUsage) {
+    @if (pouchesUsage.length === 0) {
+        <p>No pouches used this day. Good job!</p>
+    } @else {
+        <p [style.color]="(overLimit$ | async) ? 'red' : 'black'">Pouches used this day: {{ pouchesUsage.length }}</p>
+
+        <ol>
+            @for (pouchUsage of pouchesUsage; track $index) {
+                <li>{{ pouchUsage.dateTime | date:'shortTime' }}</li>
+            }
+        </ol>
+    }
+}

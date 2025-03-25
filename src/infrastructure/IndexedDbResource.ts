@@ -59,12 +59,12 @@ export class IndexedDbResource extends DomainResource {
 		return this.selectDb()
 			.pipe(
 				switchMap(db => new Observable<Array<PouchUsage>>(observer => {
-					const transaction = db.transaction(this.POUCH_LIMIT_STORE, 'readonly');
-					const store = transaction.objectStore(this.POUCH_LIMIT_STORE);
-					const request = store.getAll() as IDBRequest<Array<PouchLimitPerDayDao>>;
+					const transaction = db.transaction(this.POUCH_USAGE_STORE, 'readonly');
+					const store = transaction.objectStore(this.POUCH_USAGE_STORE);
+					const request = store.getAll() as IDBRequest<Array<PouchUsageDao>>;
 					request.onsuccess = () => {
 						observer.next(
-							this.daoToPoachUsageArray(request.result.filter(dao => dao.day.startsWith(dayString)))
+							this.daoToPoachUsageArray(request.result.filter(dao => dao.dateTime.startsWith(dayString)))
 						);
 						observer.complete();
 					};
@@ -79,8 +79,8 @@ export class IndexedDbResource extends DomainResource {
 		return this.selectDb()
 			.pipe(
 				switchMap(db => new Observable<void>(observer => {
-					const transaction = db.transaction(this.POUCH_LIMIT_STORE, 'readwrite');
-					const store = transaction.objectStore(this.POUCH_LIMIT_STORE);
+					const transaction = db.transaction(this.POUCH_USAGE_STORE, 'readwrite');
+					const store = transaction.objectStore(this.POUCH_USAGE_STORE);
 					const request = store.put(this.pouchUsageToDao(usage));
 					request.onsuccess = () => {
 						observer.next();
@@ -119,8 +119,8 @@ export class IndexedDbResource extends DomainResource {
 		});
 	}
 
-	private daoToPoachUsageArray(dao: Array<PouchLimitPerDayDao>): Array<PouchUsage> {
-		return dao.map(d => ({ dateTime: new Date(d.day) }));
+	private daoToPoachUsageArray(dao: Array<PouchUsageDao>): Array<PouchUsage> {
+		return dao.map(d => ({ dateTime: new Date(d.dateTime) }));
 	}
 
 	private pouchUsageToDao(usage: PouchUsage): PouchUsageDao {
