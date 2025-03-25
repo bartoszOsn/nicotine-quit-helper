@@ -3,6 +3,7 @@ import { Store } from '../api/Store';
 import { BehaviorSubject, combineLatest, defer, EMPTY, map, Observable, of, switchMap, tap } from 'rxjs';
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
+import { DayTimeState } from '../api/model/DayTimeState';
 
 @Injectable()
 export class DomainStore extends Store {
@@ -13,6 +14,20 @@ export class DomainStore extends Store {
 	])).pipe(
 		switchMap(([day]) => this.domainResource.fetchPouchLimitForDay(day))
 	)
+	override selectedDayTimeState$: Observable<DayTimeState> = defer(() => this.selectedDay$)
+		.pipe(
+			map(day => {
+				const now = new Date();
+				if (day.getFullYear() === now.getFullYear() && day.getMonth() === now.getMonth() && day.getDate() === now.getDate()) {
+					return DayTimeState.PRESENT;
+				}
+				if (day < now) {
+					return DayTimeState.PAST;
+				}
+				return DayTimeState.FUTURE;
+			})
+		)
+
     override pouchesUsedSelectedDay$: Observable<number> = EMPTY;
     override pouchesLeftForSelectedDay$: Observable<number> = EMPTY;
     override lastPouchUsedAt$: Observable<Date> = EMPTY;

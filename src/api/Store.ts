@@ -1,9 +1,12 @@
 import { Observable } from 'rxjs';
 import { CurrentPouchState } from './model/CurrentPouchState';
+import { DayTimeState } from './model/DayTimeState';
 
 export abstract class Store {
 	abstract readonly selectedDay$: Observable<Date>;
 	abstract readonly pouchLimitForSelectedDay$: Observable<number | null>;
+	abstract readonly selectedDayTimeState$: Observable<DayTimeState>;
+
 	abstract readonly pouchesUsedSelectedDay$: Observable<number>;
 	abstract readonly pouchesLeftForSelectedDay$: Observable<number>;
 	abstract readonly lastPouchUsedAt$: Observable<Date>;
