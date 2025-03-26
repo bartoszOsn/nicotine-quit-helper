@@ -1,0 +1,15 @@
+{
+	"short_name": "NQH",
+	"name": "Nicotine Quit Helper",
+	"icons": [
+		{
+			"src": "icon.png",
+			"sizes": "256x256",
+			"type": "image/png"
+		}
+	],
+	"start_url": ".",
+	"display": "standalone",
+	"theme_color": "#c10007",
+	"background_color": "#f6f3f4"
+}
