@@ -1,3 +1,7 @@
-<p>
-    limit: <input app-input type="number" [value]="limit$ | async" (change)="setLimit($event)" />
+<h3 class="text-primary-800 text-lg font-medium">Pouch limit</h3>
+<input app-input type="number" class="block w-full" [value]="limit$ | async" [disabled]="!(canEdit$ | async)" (change)="setLimit($event)" />
+<p class="text-gray-600 text-sm mt-2">
+    This is the maximum number of pouches that you can use this day.
+    It will be used to tell you how much you have left.
+    Also, this limit allows us to suggest you when you can use next pouches, so that you will spread your nicotine intake evenly throughout the day.
 </p>

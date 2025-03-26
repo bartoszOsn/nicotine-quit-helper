@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '../api/Store';
-import { BehaviorSubject, combineLatest, defer, EMPTY, map, Observable, of, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, defer, map, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
 import { DayTimeState } from '../api/model/DayTimeState';
@@ -17,7 +17,13 @@ export class DomainStore extends Store {
 		this.refreshPouchLimitForSelectedDaySubject.asObservable()
 	])).pipe(
 		switchMap(([day]) => this.domainResource.fetchPouchLimitForDay(day))
-	)
+	);
+
+	override readonly canEditLimitOnSelectedDay$: Observable<boolean> = defer(() => this.selectedDayTimeState$)
+		.pipe(
+			map(state => state !== DayTimeState.PAST)
+		)
+
 	override selectedDayTimeState$: Observable<DayTimeState> = defer(() => this.selectedDay$)
 		.pipe(
 			map(day => {
