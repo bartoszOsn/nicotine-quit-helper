@@ -2,15 +2,19 @@
     <app-header app-header>
         <home-day-selector />
     </app-header>
-    @switch (selectedDayTimeState$ | async) {
-        @case (DayTimeState.PAST) {
-            <past-view />
-        }
-        @case (DayTimeState.PRESENT) {
-            <present-view />
-        }
-        @case (DayTimeState.FUTURE) {
-            <future-view />
-        }
-    }
+    <div class="w-full flex justify-center">
+        <div class="max-w-xl w-full">
+            @switch (selectedDayTimeState$ | async) {
+                @case (DayTimeState.PAST) {
+                    <past-view />
+                }
+                @case (DayTimeState.PRESENT) {
+                    <present-view />
+                }
+                @case (DayTimeState.FUTURE) {
+                    <future-view />
+                }
+            }
+        </div>
+    </div>
 </app-shell>
