@@ -4,6 +4,7 @@ import { UsedPouchesComponent } from '../../used-pouches/UsedPouchesComponent';
 import { Store } from '../../../../api/Store';
 import { CurrentPouchComponent } from '../../current-pouch/CurrentPouchComponent';
 import { RemainingPouchesComponent } from '../../remaining-pouches/RemainingPouchesComponent';
+import { AppButtonComponent } from '../../../common/app-button/AppButtonComponent';
 
 @Component({
 	selector: 'present-view',
@@ -11,7 +12,8 @@ import { RemainingPouchesComponent } from '../../remaining-pouches/RemainingPouc
 		HomeLimitInputComponent,
 		UsedPouchesComponent,
 		CurrentPouchComponent,
-		RemainingPouchesComponent
+		RemainingPouchesComponent,
+		AppButtonComponent
 	],
 	templateUrl: 'PresentViewComponent.html'
 })

@@ -2,12 +2,14 @@ import { Component, inject } from '@angular/core';
 import { Store } from '../../../api/Store';
 import { defer } from 'rxjs';
 import { AsyncPipe, DatePipe } from '@angular/common';
+import { AppButtonComponent } from '../../common/app-button/AppButtonComponent';
 
 @Component({
 	selector: 'home-day-selector',
 	imports: [
 		AsyncPipe,
-		DatePipe
+		DatePipe,
+		AppButtonComponent
 	],
 	templateUrl: 'HomeDaySelectorComponent.html'
 })
