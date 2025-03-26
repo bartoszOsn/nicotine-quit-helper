@@ -7,6 +7,7 @@ import { PastViewComponent } from './views/past-view/PastViewComponent';
 import { PresentViewComponent } from './views/present-view/PresentViewComponent';
 import { FutureViewComponent } from './views/future-view/FutureViewComponent';
 import { AppShellComponent } from '../common/app-shell/AppShellComponent';
+import { AppHeaderComponent } from '../common/app-header/AppHeaderComponent';
 
 @Component({
 	selector: 'home-root',
@@ -17,7 +18,8 @@ import { AppShellComponent } from '../common/app-shell/AppShellComponent';
 		PastViewComponent,
 		PresentViewComponent,
 		FutureViewComponent,
-		AppShellComponent
+		AppShellComponent,
+		AppHeaderComponent
 	]
 })
 export class HomeRootComponent {

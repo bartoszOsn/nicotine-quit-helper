@@ -1,5 +1,7 @@
 <app-shell>
-    <home-day-selector app-header />
+    <app-header app-header>
+        <home-day-selector />
+    </app-header>
     @switch (selectedDayTimeState$ | async) {
         @case (DayTimeState.PAST) {
             <past-view />
