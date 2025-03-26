@@ -1,4 +1,4 @@
-<h3 class="text-primary-800 text-lg font-medium">Pouch limit</h3>
+<h3 class="text-primary-800 text-lg font-medium mb-2">Pouch limit</h3>
 <input app-input type="number" class="block w-full" [value]="limit$ | async" [disabled]="!(canEdit$ | async)" (change)="setLimit($event)" />
 <p class="text-gray-600 text-sm mt-2">
     This is the maximum number of pouches that you can use this day.
