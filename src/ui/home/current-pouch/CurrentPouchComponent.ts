@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '../../../api/Store';
 import { AsyncPipe } from '@angular/common';
+import { AppAlertComponent } from '../../common/app-alert/AppAlertComponent';
 
 @Component({
 	selector: 'current-pouch',
 	imports: [
-		AsyncPipe
+		AsyncPipe,
+		AppAlertComponent
 	],
 	templateUrl: 'CurrentPouchComponent.html'
 })

@@ -1,12 +1,17 @@
 @let currentPouchState = currentPouchState$ | async;
 
 @if (currentPouchState?.type === 'pouch-used') {
-    <h3>Currently using pouch</h3>
-    <p>Time left: {{$any(currentPouchState).timeLeftInSeconds}}</p>
+    <app-alert class="mb-6">
+        <span app-alert-title>Currently using pouch</span>
+        <p>Time left: {{$any(currentPouchState).timeLeftInSeconds}}</p>
+    </app-alert>
 } @else if (currentPouchState?.type === 'pouch-ready') {
     <h3>Your pouch is used up!</h3>
     <p>You can discard it now.</p>
-    <!-- Add here a logic to ring a bell -->
-} @else {
-    <h3>No pouch used now.</h3>
+    <app-alert class="mb-6">
+        <span app-alert-title>Your pouch is used up!</span>
+        <p>You can discard it now.</p>
+    </app-alert>
+    <!-- TODO: Add here a logic to ring a bell -->
+    <!-- Also, make this alert solid red -->
 }
