@@ -20,7 +20,7 @@ export class HomeLimitInputComponent {
 	private readonly store = inject(Store);
 
 	constructor() {
-		setHostClasses('block mb-6');
+		setHostClasses('block mb-8');
 	}
 
 	setLimit(event: Event): void {
