@@ -60,7 +60,7 @@ export class DomainStore extends Store {
 				timeEnd.setHours(23, 59, 59, 999);
 
 				return Array.from({ length: pouchesLeft }).map((_, i) => {
-					const t = i / (pouchesLeft - 1);
+					const t = (i + 1) / pouchesLeft;
 					const time = new Date(now.getTime() + t * (timeEnd.getTime() - now.getTime()));
 					return { dateTime: time };
 				})
