@@ -6,6 +6,7 @@ import { DayTimeState } from '../../api/model/DayTimeState';
 import { PastViewComponent } from './views/past-view/PastViewComponent';
 import { PresentViewComponent } from './views/present-view/PresentViewComponent';
 import { FutureViewComponent } from './views/future-view/FutureViewComponent';
+import { AppShellComponent } from '../common/app-shell/AppShellComponent';
 
 @Component({
 	selector: 'home-root',
@@ -15,7 +16,8 @@ import { FutureViewComponent } from './views/future-view/FutureViewComponent';
 		AsyncPipe,
 		PastViewComponent,
 		PresentViewComponent,
-		FutureViewComponent
+		FutureViewComponent,
+		AppShellComponent
 	]
 })
 export class HomeRootComponent {

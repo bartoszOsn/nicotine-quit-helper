@@ -1,12 +1,14 @@
-<home-day-selector />
-@switch (selectedDayTimeState$ | async) {
-    @case (DayTimeState.PAST) {
-        <past-view />
+<app-shell>
+    <home-day-selector app-header />
+    @switch (selectedDayTimeState$ | async) {
+        @case (DayTimeState.PAST) {
+            <past-view />
+        }
+        @case (DayTimeState.PRESENT) {
+            <present-view />
+        }
+        @case (DayTimeState.FUTURE) {
+            <future-view />
+        }
     }
-    @case (DayTimeState.PRESENT) {
-        <present-view />
-    }
-    @case (DayTimeState.FUTURE) {
-        <future-view />
-    }
-}
+</app-shell>
