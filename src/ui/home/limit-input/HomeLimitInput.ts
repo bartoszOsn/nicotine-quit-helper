@@ -2,11 +2,13 @@ import { Component, inject } from '@angular/core';
 import { defer } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { Store } from '../../../api/Store';
+import { AppInputComponent } from '../../common/app-input/AppInputComponent';
 
 @Component({
 	selector: 'home-limit-input',
 	imports: [
-		AsyncPipe
+		AsyncPipe,
+		AppInputComponent
 	],
 	templateUrl: 'HomeLimitInputComponent.html'
 })
