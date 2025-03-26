@@ -7,6 +7,6 @@ import { setHostClasses } from '../../../util/setHostClasses';
 })
 export class AppShellComponent {
 	constructor() {
-		setHostClasses('flex flex-col w-full h-screen overflow-hidden');
+		setHostClasses('flex flex-col w-full h-screen overflow-hidden bg-gray-100 text-gray-950');
 	}
 }
