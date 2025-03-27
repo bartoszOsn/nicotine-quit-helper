@@ -5,6 +5,8 @@ import { CurrentPouchState } from '../../api/model/CurrentPouchState';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
 import { map, Observable, of, switchMap, takeWhile, tap } from 'rxjs';
 
+// TODO: To remove.
+/** @deprecated */
 @Injectable()
 export class NotificationTimerService {
 	private readonly PROGRESS_NOTIFICATION_ID = 'pouch-progress';
