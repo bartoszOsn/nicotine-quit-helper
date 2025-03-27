@@ -1,0 +1,1 @@
+function o(i){return i?.type==="notification"}var e=[];onmessage=i=>{let t=i.data;o(t)&&(n(),a(t.notifications))};function n(){for(let i of e)clearTimeout(i)}function a(i){for(let t of i)e.push(setTimeout(()=>{new Notification(t.title,{body:t.body,tag:t.tag,silent:t.silent})},t.scheduledAt-Date.now()))}
