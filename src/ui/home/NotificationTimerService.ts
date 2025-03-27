@@ -3,7 +3,7 @@ import { Store } from '../../api/Store';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { CurrentPouchState } from '../../api/model/CurrentPouchState';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
-import { switchMap, takeWhile } from 'rxjs';
+import { map, Observable, of, switchMap, takeWhile, tap } from 'rxjs';
 
 @Injectable()
 export class NotificationTimerService {
@@ -13,58 +13,73 @@ export class NotificationTimerService {
 	private readonly store = inject(Store);
 	private readonly destroyRef = inject(DestroyRef);
 
-	private progressNotification: Notification | null = null;
-	private finishedNotification: Notification | null = null;
-
 	init(): void {
 		fromPromise(Notification.requestPermission())
 			.pipe(
 				takeWhile(permission => permission === 'granted', false),
+				switchMap(() => this.registerWebService()),
 				switchMap(() => this.store.currentPouchState$),
+				switchMap((pouchState) => this.handlePouchState(pouchState)),
 				takeUntilDestroyed(this.destroyRef),
 			)
-			.subscribe((pouchState: CurrentPouchState) => {
-				this.handlePouchState(pouchState);
-			})
+			.subscribe()
 	}
 
-	private handlePouchState(pouchState: CurrentPouchState): void {
+	private handlePouchState(pouchState: CurrentPouchState): Observable<void> {
 		if (pouchState.type === 'pouch-used') {
-			this.showOrUpdateProgressNotification(pouchState.timeLeftInSeconds);
+			return this.showOrUpdateProgressNotification(pouchState.timeLeftInSeconds);
 		} else if (pouchState.type === 'pouch-ready') {
-			this.showPouchReadyNotification();
+			return this.showPouchReadyNotification();
 		} else {
-			this.hideNotification();
+			return this.hideNotification();
 		}
 	}
 
-	private showOrUpdateProgressNotification(timeLeftInSeconds: number): void {
-		this.hideNotification();
-		this.progressNotification = new Notification(" Pouch in use", {
-			tag: this.PROGRESS_NOTIFICATION_ID,
-			body: `Time left: ${timeLeftInSeconds} seconds`,
-			silent: true,
-		});
-		console.log(Notification.permission);
+	private showOrUpdateProgressNotification(timeLeftInSeconds: number): Observable<void> {
+		return this.hideNotification(this.FINISHED_NOTIFICATION_ID)
+			.pipe(
+				switchMap(() => navigator.serviceWorker.ready),
+				switchMap((serviceWorker) => serviceWorker.showNotification("Pouch in use", {
+					tag: this.PROGRESS_NOTIFICATION_ID,
+					body: `Time left: ${timeLeftInSeconds} seconds`,
+					silent: true,
+				}))
+			);
 	}
 
-	private showPouchReadyNotification(): void {
-		this.hideNotification();
-		this.finishedNotification = new Notification("Pouch ready", {
-			tag: this.FINISHED_NOTIFICATION_ID,
-			body: 'You can discard the pouch now',
-			silent: false,
-		});
+	private showPouchReadyNotification(): Observable<void> {
+		return this.hideNotification(this.PROGRESS_NOTIFICATION_ID)
+			.pipe(
+				switchMap(() => navigator.serviceWorker.ready),
+				switchMap((serviceWorker) => serviceWorker.showNotification("Pouch ready", {
+					tag: this.FINISHED_NOTIFICATION_ID,
+					body: 'You can discard the pouch now',
+					silent: false,
+				}))
+			);
 	}
 
-	private hideNotification(): void {
-		if (this.progressNotification) {
-			this.progressNotification.close();
-			this.progressNotification = null;
-		}
-		if (this.finishedNotification) {
-			this.finishedNotification.close();
-			this.finishedNotification = null;
-		}
+	private hideNotification(tag?: string): Observable<void> {
+		fromPromise(navigator.serviceWorker.ready)
+			.pipe(
+				switchMap((serviceWorker) => {
+					return serviceWorker.getNotifications(
+						tag ? {tag} : undefined,
+					);
+				}),
+				tap((notifications) => {
+					notifications.forEach((notification) => notification.close());
+				}),
+				map(() => void 0),
+			)
+
+		return of(void 0);
+	}
+
+	private registerWebService(): Observable<void> {
+		return fromPromise(navigator.serviceWorker.register('/web-service.js'))
+			.pipe(
+				map(() => void 0)
+			);
 	}
 }
