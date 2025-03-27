@@ -3,15 +3,6 @@
 @if (currentPouchState?.type === 'pouch-used') {
     <app-alert class="mb-6">
         <span app-alert-title>Currently using pouch</span>
-        <p>Time left: {{$any(currentPouchState).timeLeftInSeconds}}</p>
+        <p>Time left: {{pouchTimeLeft$ | async}}</p>
     </app-alert>
-} @else if (currentPouchState?.type === 'pouch-ready') {
-    <h3>Your pouch is used up!</h3>
-    <p>You can discard it now.</p>
-    <app-alert class="mb-6">
-        <span app-alert-title>Your pouch is used up!</span>
-        <p>You can discard it now.</p>
-    </app-alert>
-    <!-- TODO: Add here a logic to ring a bell -->
-    <!-- Also, make this alert solid red -->
 }
