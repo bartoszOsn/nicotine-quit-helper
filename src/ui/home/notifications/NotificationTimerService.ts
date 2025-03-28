@@ -51,7 +51,7 @@ export class NotificationTimerService {
 			const date = Date.now();
 			const getNotification = (scheduledFromNow: number): NotificationPayload => ({
 				title: 'Pouch in use',
-				body: `Time left: ${Math.floor((30 * 60 * 1000 - scheduledFromNow)/1000 )} seconds`,
+				body: `Time left: ${Math.floor((30 * 60 * 1000 - (date - state.startTime.getTime()))/1000 )} seconds`,
 				silent: false,
 				tag: 'pouch-progress',
 				scheduledAt: date + scheduledFromNow,
