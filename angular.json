@@ -34,7 +34,13 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+				{
+					"input": "src/web-service.js",
+					"inject": false,
+					"bundleName": "web-service"
+				}
+			]
           },
           "configurations": {
             "production": {

@@ -8,7 +8,7 @@ import { PresentViewComponent } from './views/present-view/PresentViewComponent'
 import { FutureViewComponent } from './views/future-view/FutureViewComponent';
 import { AppShellComponent } from '../common/app-shell/AppShellComponent';
 import { AppHeaderComponent } from '../common/app-header/AppHeaderComponent';
-import { NotificationTimerService } from './notifications/NotificationTimerService';
+import { NotificationTimerService } from './NotificationTimerService';
 
 @Component({
 	selector: 'home-root',
@@ -22,9 +22,7 @@ import { NotificationTimerService } from './notifications/NotificationTimerServi
 		AppShellComponent,
 		AppHeaderComponent
 	],
-	providers: [
-		NotificationTimerService
-	]
+	providers: [NotificationTimerService]
 })
 export class HomeRootComponent implements OnInit {
 	private readonly store = inject(Store);
