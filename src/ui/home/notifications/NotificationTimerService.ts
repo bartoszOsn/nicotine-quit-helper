@@ -1,6 +1,6 @@
 import { DestroyRef, inject, Injectable } from '@angular/core';
 import { fromPromise } from 'rxjs/internal/observable/innerFrom';
-import { map, Observable, of, pairwise, switchMap, takeWhile, tap } from 'rxjs';
+import { combineLatestWith, map, Observable, pairwise, switchMap, takeWhile, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '../../../api/Store';
 import { CurrentPouchState } from '../../../api/model/CurrentPouchState';
@@ -15,43 +15,25 @@ export class NotificationTimerService {
 		fromPromise(Notification.requestPermission())
 			.pipe(
 				takeWhile(permission => permission === 'granted', false),
-				switchMap(() => this.registerWorker()),
-				switchMap(() => this.store.currentPouchState$.pipe(pairwise())),
-				switchMap(([prevState, nextState]) => this.handlePouchState(prevState, nextState)),
+				map(() => this.registerWorker()),
+				combineLatestWith(this.store.currentPouchState$.pipe(pairwise())),
+				tap(([worker, [prevState, nextState]]) => this.handlePouchState(worker, prevState, nextState)),
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe()
 	}
 
-	private registerWorker(): Observable<void> {
-		return fromPromise(
-			navigator.serviceWorker.register(new URL('./notifications-service-worker.js', import.meta.url))
-		).pipe(
-			tap(() => {
-				navigator.serviceWorker.onmessage = (event) => {
-					if ('title' in event.data) {
-						const notification = event.data;
-						navigator.serviceWorker.ready.then((registration) => {
-							registration.showNotification(notification.title, {
-								body: notification.body,
-								tag: notification.tag,
-								silent: notification.silent
-							}).then();
-						});
-					}
-				};
-			}),
-			map(() => void 0)
-		);
+	private registerWorker(): Worker {
+		return new Worker(new URL('./notifications-worker.ts', import.meta.url));
 	}
 
-	private handlePouchState(prevState: CurrentPouchState, nextState: CurrentPouchState): Observable<void> {
+	private handlePouchState(worker: Worker, prevState: CurrentPouchState, nextState: CurrentPouchState): void {
 		if (prevState.type !== 'pouch-used' && nextState.type === 'pouch-used') {
 			const date = Date.now();
 			const getNotification = (scheduledFromNow: number): NotificationPayload => ({
 				title: 'Pouch in use',
 				body: `Time left: ${nextState.timeLeftInSeconds - Math.floor(scheduledFromNow / 1000)} seconds`,
-				silent: false,
+				silent: true,
 				tag: 'pouch-progress',
 				scheduledAt: date + scheduledFromNow,
 			})
@@ -73,12 +55,7 @@ export class NotificationTimerService {
 				]
 			}
 
-			return fromPromise(navigator.serviceWorker.ready).pipe(
-				tap((registration) => registration.active?.postMessage(message)),
-				map(() => void 0)
-			);
+			worker.postMessage(message);
 		}
-
-		return of(void 0);
 	}
 }

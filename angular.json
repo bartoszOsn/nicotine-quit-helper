@@ -34,13 +34,7 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": [
-				{
-					"input": "src/ui/home/notifications/notifications-service-worker.js",
-					"bundleName": "notifications-service-worker",
-					"inject": false
-				}
-			]
+            "scripts": []
           },
           "configurations": {
             "production": {
