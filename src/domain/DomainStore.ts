@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Store } from '../api/Store';
-import { BehaviorSubject, combineLatest, defer, distinctUntilChanged, map, Observable, of, switchMap, tap, timer } from 'rxjs';
+import { BehaviorSubject, combineLatest, defer, map, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
 import { DayTimeState } from '../api/model/DayTimeState';
@@ -115,26 +115,19 @@ export class DomainStore extends Store {
 
 				return of([now, null]);
 			}),
-			map(([now, lastPouch]): CurrentPouchState => {
+			map(([now, lastPouch]) => {
 				if (lastPouch === null) {
 					return { type: 'no-pouch' };
 				}
 				if (now.getTime() - lastPouch.dateTime.getTime() < this.POUCH_USAGE_TIME) {
-					return { type: 'pouch-used', startTime: lastPouch.dateTime };
+					return { type: 'pouch-used', timeLeftInSeconds: Math.floor((this.POUCH_USAGE_TIME - (now.getTime() - lastPouch.dateTime.getTime())) / 1000) };
+				}
+
+				if (now.getTime() - lastPouch.dateTime.getTime() < this.POUCH_USAGE_TIME + this.ALERT_TIME) {
+					return { type: 'pouch-ready', lastPouch };
 				}
 
 				return { type: 'no-pouch' };
-			}),
-			distinctUntilChanged((a, b) => {
-				if (a.type !== b.type) {
-					return false;
-				}
-
-				if (a.type === 'pouch-used' && b.type === 'pouch-used') {
-					return a.startTime.getTime() === b.startTime.getTime();
-				}
-
-				return true;
 			})
 		)
 

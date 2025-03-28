@@ -6,7 +6,6 @@ import { Store } from '../../../api/Store';
 import { CurrentPouchState } from '../../../api/model/CurrentPouchState';
 import { NotificationMessage, NotificationPayload } from './NotificationMessage';
 
-// TODO: Zrefaktorować to jakoś, bo to jest straszne
 @Injectable()
 export class NotificationTimerService {
 	private readonly store = inject(Store);
@@ -17,8 +16,8 @@ export class NotificationTimerService {
 			.pipe(
 				takeWhile(permission => permission === 'granted', false),
 				switchMap(() => this.registerWorker()),
-				switchMap(() => this.store.currentPouchState$),
-				switchMap((state) => this.handlePouchState(state)),
+				switchMap(() => this.store.currentPouchState$.pipe(pairwise())),
+				switchMap(([prevState, nextState]) => this.handlePouchState(prevState, nextState)),
 				takeUntilDestroyed(this.destroyRef),
 			)
 			.subscribe()
@@ -46,28 +45,31 @@ export class NotificationTimerService {
 		);
 	}
 
-	private handlePouchState(state: CurrentPouchState): Observable<void> {
-		if (state.type === 'pouch-used') {
+	private handlePouchState(prevState: CurrentPouchState, nextState: CurrentPouchState): Observable<void> {
+		if (prevState.type !== 'pouch-used' && nextState.type === 'pouch-used') {
 			const date = Date.now();
 			const getNotification = (scheduledFromNow: number): NotificationPayload => ({
 				title: 'Pouch in use',
-				body: `Time left: HGW seconds`,
+				body: `Time left: ${nextState.timeLeftInSeconds - Math.floor(scheduledFromNow / 1000)} seconds`,
 				silent: false,
 				tag: 'pouch-progress',
 				scheduledAt: date + scheduledFromNow,
-			});
+			})
 
 			const message: NotificationMessage = {
 				type: 'notification',
 				notifications: [
-					...Array.from({length: 30 * 60}, (_, i) => getNotification(i * 1000)),
-					{
-						title: 'Pouch used up',
-						body: 'You can dispose of the pouch now',
-						tag: 'pouch-used-up',
-						scheduledAt: date + 30 * 60 * 1000,
-						silent: false
-					}
+					getNotification(0),
+					getNotification(1000),
+					getNotification(2000),
+					getNotification(3000),
+					getNotification(4000),
+					getNotification(5000),
+					getNotification(6000),
+					getNotification(7000),
+					getNotification(8000),
+					getNotification(9000),
+					getNotification(10000),
 				]
 			}
 
