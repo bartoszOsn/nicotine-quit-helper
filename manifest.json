@@ -11,5 +11,14 @@
 	"start_url": ".",
 	"display": "standalone",
 	"theme_color": "#c10007",
-	"background_color": "#f6f3f4"
+	"background_color": "#f6f3f4",
+	"screenshots": [
+		{
+			"src": "screenshot-desktop.png",
+			"sizes": "3837x1668",
+			"type": "image/png",
+			"label": "Desktop",
+			"form_factor": "wide"
+		}
+	]
 }
