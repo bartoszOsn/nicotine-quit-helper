@@ -1,1 +1,1 @@
-export type ColorVariant = 'primary' | 'secondary';
+export type ColorVariant = 'primary' | 'secondary' | 'danger';

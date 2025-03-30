@@ -1,0 +1,31 @@
+@let pouchesUsage = pouchesUsage$ | async;
+@let numberOfUsedPouches = pouchesUsage?.length;
+@let suggestedPouchUsage = suggestedPouchUsage$ | async;
+@let limit = limit$ | async;
+
+<app-timeline>
+    @if ((pouchesUsage?.length ?? 0) > 0) {
+        <app-timeline-section-header>
+            <span app-timeline-header>Used pouches</span>
+            <span app-timeline-body>Used so far: {{numberOfUsedPouches}}</span>
+        </app-timeline-section-header>
+        @for (pouch of pouchesUsage; track $index) {
+            @let overLimit = ($index + 1 > (limit ?? Infinity));
+            <app-timeline-item [variant]="overLimit ? 'danger' : 'primary'">
+                {{ pouch.dateTime | date:'shortTime'}}
+                @if (overLimit) {
+                    <span class="text-gray-500"> (Over limit)</span>
+                }
+            </app-timeline-item>
+        }
+    }
+    @if ((suggestedPouchUsage?.length ?? 0) > 0) {
+        <app-timeline-section-header variant="secondary">
+            <span app-timeline-header>Suggested pouch usages</span>
+            <span app-timeline-body>Pouches left: {{suggestedPouchUsage?.length}}</span>
+        </app-timeline-section-header>
+        @for (pouch of suggestedPouchUsage; track $index) {
+            <app-timeline-item variant="secondary">{{ pouch.dateTime | date:'shortTime'}}</app-timeline-item>
+        }
+    }
+</app-timeline>

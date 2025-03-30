@@ -2,26 +2,6 @@
 
 <home-limit-input />
 
-<button app-btn class="block w-full text-xl py-4" (click)="usePouch()">Use pouch</button>
+<button app-btn class="block w-full text-xl py-4 mb-4" (click)="usePouch()">Use pouch</button>
 
-<used-pouches />
-
-<remaining-pouches-component />
-
-<app-timeline>
-    <app-timeline-section-header>
-        <span app-timeline-header>Used pouches</span>
-        <span app-timeline-body>Used so far: 3</span>
-    </app-timeline-section-header>
-    <app-timeline-item>11:32</app-timeline-item>
-    <app-timeline-item>13:15</app-timeline-item>
-    <app-timeline-item>15:26</app-timeline-item>
-    <app-timeline-section-header variant="secondary">
-        <span app-timeline-header>Suggested pouch usages</span>
-        <span app-timeline-body>Pouches left: 4</span>
-    </app-timeline-section-header>
-    <app-timeline-item variant="secondary">16:32</app-timeline-item>
-    <app-timeline-item variant="secondary">17:15</app-timeline-item>
-    <app-timeline-item variant="secondary">18:26</app-timeline-item>
-    <app-timeline-item variant="secondary">19:23</app-timeline-item>
-</app-timeline>
+<pouch-stats />
