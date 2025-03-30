@@ -120,7 +120,12 @@ export class DomainStore extends Store {
 					return { type: 'no-pouch' };
 				}
 				if (now.getTime() - lastPouch.dateTime.getTime() < this.POUCH_USAGE_TIME) {
-					return { type: 'pouch-used', timeLeftInSeconds: Math.floor((this.POUCH_USAGE_TIME - (now.getTime() - lastPouch.dateTime.getTime())) / 1000) };
+					const timeLeftInSeconds = Math.floor((this.POUCH_USAGE_TIME - (now.getTime() - lastPouch.dateTime.getTime())) / 1000);
+					return {
+						type: 'pouch-used',
+						timeLeftInSeconds: timeLeftInSeconds,
+						progress: timeLeftInSeconds / (this.POUCH_USAGE_TIME / 1000)
+					};
 				}
 
 				if (now.getTime() - lastPouch.dateTime.getTime() < this.POUCH_USAGE_TIME + this.ALERT_TIME) {

@@ -2,7 +2,8 @@ export type CurrentPouchState = {
 	type: 'no-pouch'
 } | {
 	type: 'pouch-used',
-	timeLeftInSeconds: number
+	timeLeftInSeconds: number,
+	progress: number,
 } | {
 	type: 'pouch-ready'
 }

@@ -2,16 +2,18 @@
 
 @if (currentPouchState?.type === 'pouch-used') {
     <app-alert class="mb-6">
-        <span app-alert-title>Currently using pouch</span>
-        <p>Time left: {{$any(currentPouchState).timeLeftInSeconds}}</p>
+        <span app-alert-title class="block mb-4">Currently using pouch</span>
+        <div class="flex flex-row gap-4 items-center mb-2">
+            <app-radial-progress [progress]="$any(currentPouchState).progress">⏱</app-radial-progress>
+            <div class="flex flex-col">
+                <p class="text-gray-600 font-medium">Time left:</p>
+                <p class="text-2xl font-medium">{{$any(currentPouchState).timeLeftInSeconds}}</p>
+            </div>
+        </div>
     </app-alert>
 } @else if (currentPouchState?.type === 'pouch-ready') {
-    <h3>Your pouch is used up!</h3>
-    <p>You can discard it now.</p>
     <app-alert class="mb-6">
         <span app-alert-title>Your pouch is used up!</span>
         <p>You can discard it now.</p>
     </app-alert>
-    <!-- TODO: Add here a logic to ring a bell -->
-    <!-- Also, make this alert solid red -->
 }

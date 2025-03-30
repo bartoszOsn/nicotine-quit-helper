@@ -1,0 +1,13 @@
+<svg class="w-20 h-20" viewBox="0 0 20 20">
+    <circle r="8" cx="10" cy="10" class="fill-transparent stroke-primary-300" stroke-width="3" />
+    <circle r="8"
+            cx="10"
+            cy="10"
+            class="fill-transparent stroke-primary-500"
+            stroke-width="3"
+            [attr.stroke-dasharray]="dasharray()"
+            [attr.stroke-dashoffset]="DASHOFFSET"/>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center text-2xl">
+    <ng-content />
+</div>
