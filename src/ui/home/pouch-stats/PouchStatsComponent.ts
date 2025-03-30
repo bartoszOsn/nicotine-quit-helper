@@ -23,5 +23,6 @@ export class PouchStatsComponent {
 	readonly pouchesLeft$ = this.store.pouchesLeft$;
 	readonly suggestedPouchUsage$ = this.store.suggestedPouchUsage$;
 	readonly limit$ = this.store.pouchLimitForSelectedDay$;
+	readonly showSuggestedPouchUsage$ = this.store.showSuggestedPouchUsage$;
 	protected readonly Infinity = Infinity;
 }

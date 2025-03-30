@@ -1,6 +1,7 @@
 @let pouchesUsage = pouchesUsage$ | async;
 @let numberOfUsedPouches = pouchesUsage?.length;
 @let suggestedPouchUsage = suggestedPouchUsage$ | async;
+@let showSuggestedPouchUsage = showSuggestedPouchUsage$ | async;
 @let limit = limit$ | async;
 
 <app-timeline>
@@ -19,7 +20,7 @@
             </app-timeline-item>
         }
     }
-    @if ((suggestedPouchUsage?.length ?? 0) > 0) {
+    @if (showSuggestedPouchUsage && (suggestedPouchUsage?.length ?? 0) > 0) {
         <app-timeline-section-header variant="secondary">
             <span app-timeline-header>Suggested pouch usages</span>
             <span app-timeline-body>Pouches left: {{suggestedPouchUsage?.length}}</span>

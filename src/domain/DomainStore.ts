@@ -73,6 +73,11 @@ export class DomainStore extends Store {
 			})
 		);
 
+	override showSuggestedPouchUsage$: Observable<boolean> = defer(() => this.selectedDayTimeState$)
+		.pipe(
+			map(state => state === DayTimeState.PRESENT)
+		)
+
 	override readonly pouchesLeft$: Observable<number> = combineLatest([
 		this.pouchLimitForSelectedDay$,
 		this.pouchesUsage$
@@ -89,15 +94,7 @@ export class DomainStore extends Store {
 
 				return limit - pouches.length;
 			})
-		)
-
-	override readonly overLimit$: Observable<boolean> = combineLatest([
-		this.pouchLimitForSelectedDay$,
-		this.pouchesUsage$
-	])
-		.pipe(
-			map(([limit, usages]) => limit !== null && usages.length > limit)
-		)
+		);
 
 	override readonly currentPouchState$: Observable<CurrentPouchState> = combineLatest([
 		defer(() => this.now$),

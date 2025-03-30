@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { UsedPouchesComponent } from '../../used-pouches/UsedPouchesComponent';
 import { HomeLimitInputComponent } from '../../limit-input/HomeLimitInput';
+import { PouchStatsComponent } from '../../pouch-stats/PouchStatsComponent';
 
 @Component({
 	selector: 'past-view',
 	imports: [
-		UsedPouchesComponent,
-		HomeLimitInputComponent
+		HomeLimitInputComponent,
+		PouchStatsComponent
 	],
 	templateUrl: 'PastViewComponent.html'
 })
