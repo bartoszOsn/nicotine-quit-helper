@@ -1,0 +1,9 @@
+<div class="w-8 flex justify-center items-stretch relative">
+    <div class="{{lineColorClass()}} w-2"></div>
+</div>
+<div class="py-2 mt-2">
+    <h3 class="{{headerColorClass()}} text-lg font-medium"><ng-content select="[app-timeline-header]" /></h3>
+    <p class="text-gray-600 text-sm">
+        <ng-content select="[app-timeline-body]" />
+    </p>
+</div>

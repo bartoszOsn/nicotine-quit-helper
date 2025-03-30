@@ -5,6 +5,9 @@ import { Store } from '../../../../api/Store';
 import { CurrentPouchComponent } from '../../current-pouch/CurrentPouchComponent';
 import { RemainingPouchesComponent } from '../../remaining-pouches/RemainingPouchesComponent';
 import { AppButtonComponent } from '../../../common/app-button/AppButtonComponent';
+import { AppTimelineComponent } from '../../../common/app-timeline/AppTimelineComponent';
+import { AppTimelineSectionHeaderComponent } from '../../../common/app-timeline/AppTimelineSectionHeaderComponent';
+import { AppTimelineItemComponent } from '../../../common/app-timeline/AppTimelineItemComponent';
 
 @Component({
 	selector: 'present-view',
@@ -13,7 +16,10 @@ import { AppButtonComponent } from '../../../common/app-button/AppButtonComponen
 		UsedPouchesComponent,
 		CurrentPouchComponent,
 		RemainingPouchesComponent,
-		AppButtonComponent
+		AppButtonComponent,
+		AppTimelineComponent,
+		AppTimelineSectionHeaderComponent,
+		AppTimelineItemComponent
 	],
 	templateUrl: 'PresentViewComponent.html'
 })
