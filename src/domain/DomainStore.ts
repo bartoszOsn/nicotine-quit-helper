@@ -124,7 +124,7 @@ export class DomainStore extends Store {
 					return {
 						type: 'pouch-used',
 						timeLeftInSeconds: timeLeftInSeconds,
-						progress: timeLeftInSeconds / (this.POUCH_USAGE_TIME / 1000)
+						progress: 1 - timeLeftInSeconds / (this.POUCH_USAGE_TIME / 1000)
 					};
 				}
 
