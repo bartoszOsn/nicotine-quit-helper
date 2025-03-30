@@ -7,7 +7,7 @@
             <app-radial-progress [progress]="$any(currentPouchState).progress">⏱</app-radial-progress>
             <div class="flex flex-col">
                 <p class="text-gray-600 font-medium">Time left:</p>
-                <p class="text-2xl font-medium">{{$any(currentPouchState).timeLeftInSeconds}}</p>
+                <p class="text-2xl font-medium">{{$any(currentPouchState).timeLeftInSeconds | appInterval}}</p>
             </div>
         </div>
     </app-alert>

@@ -3,13 +3,15 @@ import { Store } from '../../../api/Store';
 import { AsyncPipe } from '@angular/common';
 import { AppAlertComponent } from '../../common/app-alert/AppAlertComponent';
 import { AppRadialProgressComponent } from '../../common/app-radial-Progress/AppRadialProgressComponent';
+import { AppIntervalPipe } from '../../common/appInterval';
 
 @Component({
 	selector: 'current-pouch',
 	imports: [
 		AsyncPipe,
 		AppAlertComponent,
-		AppRadialProgressComponent
+		AppRadialProgressComponent,
+		AppIntervalPipe
 	],
 	templateUrl: 'CurrentPouchComponent.html'
 })
