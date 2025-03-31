@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { defer } from 'rxjs';
 import { AsyncPipe } from '@angular/common';
-import { Store } from '../../../api/Store';
+import { Repository } from '../../../api/Repository';
 import { AppInputComponent } from '../../common/app-input/AppInputComponent';
 import { setHostClasses } from '../../../util/setHostClasses';
 
@@ -14,16 +14,16 @@ import { setHostClasses } from '../../../util/setHostClasses';
 	templateUrl: 'HomeLimitInputComponent.html'
 })
 export class HomeLimitInputComponent {
-	readonly limit$ = defer(() => this.store.pouchLimitForSelectedDay$);
-	readonly canEdit$ = defer(() => this.store.canEditLimitOnSelectedDay$);
+	readonly limit$ = defer(() => this.repository.pouchLimitForSelectedDay$);
+	readonly canEdit$ = defer(() => this.repository.canEditLimitOnSelectedDay$);
 
-	private readonly store = inject(Store);
+	private readonly repository = inject(Repository);
 
 	constructor() {
 		setHostClasses('block mb-8');
 	}
 
 	setLimit(event: Event): void {
-		this.store.setLimitForSelectedDay((event.currentTarget as HTMLInputElement).valueAsNumber).subscribe();
+		this.repository.setLimitForSelectedDay((event.currentTarget as HTMLInputElement).valueAsNumber).subscribe();
 	}
 }
