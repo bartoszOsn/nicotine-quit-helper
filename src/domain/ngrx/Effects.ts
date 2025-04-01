@@ -19,7 +19,7 @@ export class Effects {
 			ofType(fetchLimitForSelectedDay),
 			concatLatestFrom(() => this.ngrxStore.select(SimpleSelectors.selectSelectedDay)),
 			switchMap(([_action, selectedDay]) => {
-				return this.domainResource.fetchPouchLimitForDay(selectedDay);
+				return this.domainResource.fetchPouchLimitForDay(new Date(selectedDay));
 			}),
 			map(limit => fetchLimitForSelectedDaySuccess({ limit: limit }))
 		)

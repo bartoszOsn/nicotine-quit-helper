@@ -19,7 +19,7 @@ export class DomainRepository extends Repository {
 		this.selectedDay$,
 		this.refreshPouchLimitForSelectedDaySubject.asObservable()
 	])).pipe(
-		switchMap(([day]) => this.domainResource.fetchPouchLimitForDay(day as any))
+		switchMap(([day]) => this.domainResource.fetchPouchLimitForDay(day))
 	);
 
 	override readonly canEditLimitOnSelectedDay$: Observable<boolean> = defer(() => this.selectedDayTimeState$)
@@ -46,7 +46,7 @@ export class DomainRepository extends Repository {
 		defer(() => this.refreshPouchUsageForSelectedDaySubject)
 	])
 		.pipe(
-			switchMap(([day]) => this.domainResource.fetchPouchUsageForDay(day as any))
+			switchMap(([day]) => this.domainResource.fetchPouchUsageForDay(day))
 		);
 
 	override readonly suggestedPouchUsage$: Observable<Array<PouchUsage>> = combineLatest([
@@ -144,7 +144,7 @@ export class DomainRepository extends Repository {
 	private now$ = timer(0, 1000).pipe(map(() => new Date()));
 	private lastPouchUsageOfPreviousDay$: Observable<PouchUsage | null> = this.selectedDay$.pipe(
 		map(day => new Date(day.getTime() - 24 * 60 * 60 * 1000)),
-		switchMap(day => this.domainResource.fetchPouchUsageForDay(day as any)),
+		switchMap(day => this.domainResource.fetchPouchUsageForDay(day)),
 		map(usages => {
 			if (usages.length === 0) {
 				return null;
@@ -178,7 +178,7 @@ export class DomainRepository extends Repository {
 	}
 
 	override setLimitForSelectedDay(limit: number): Observable<void> {
-        return this.domainResource.setPouchLimitForDay(this.selectedDay as any, limit).pipe(
+        return this.domainResource.setPouchLimitForDay(this.selectedDay, limit).pipe(
 			tap(() => this.refreshPouchLimitForSelectedDaySubject.next(void 0)),
 			map(() => void 0)
 		);

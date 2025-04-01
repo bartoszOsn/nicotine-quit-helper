@@ -4,7 +4,6 @@ import { PouchUsage } from '../api/model/PouchUsage';
 import { Observable, switchMap } from 'rxjs';
 import { PouchLimitPerDayDao } from './dao/PouchLimitPerDayDao';
 import { PouchUsageDao } from './dao/PouchUsageDao';
-import { Day } from '../util/time/model/Day';
 
 @Injectable()
 export class IndexedDbResource extends DomainResource {
@@ -13,7 +12,7 @@ export class IndexedDbResource extends DomainResource {
 	private readonly POUCH_LIMIT_STORE = 'pouchLimit';
 	private readonly POUCH_USAGE_STORE = 'pouchUsage';
 
-    override fetchPouchLimitForDay(day: Day): Observable<number | null> {
+    override fetchPouchLimitForDay(day: Date): Observable<number | null> {
 		const dayString = day.toISOString().split('T')[0];
 
         return this.selectDb()
@@ -33,7 +32,7 @@ export class IndexedDbResource extends DomainResource {
 				}))
 			);
     }
-    override setPouchLimitForDay(day: Day, limit: number): Observable<void> {
+    override setPouchLimitForDay(day: Date, limit: number): Observable<void> {
 		const dayString = day.toISOString().split('T')[0];
 
 		return this.selectDb()
@@ -54,7 +53,7 @@ export class IndexedDbResource extends DomainResource {
 			);
     }
 
-    override fetchPouchUsageForDay(day: Day): Observable<Array<PouchUsage>> {
+    override fetchPouchUsageForDay(day: Date): Observable<Array<PouchUsage>> {
 		const dayString = day.toISOString().split('T')[0];
 
 		return this.selectDb()
