@@ -2351,55 +2351,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ngrx/effects@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@ngrx/effects@npm:19.0.1"
-  dependencies:
-    tslib: ^2.0.0
-  peerDependencies:
-    "@angular/core": ^19.0.0
-    "@ngrx/store": 19.0.1
-    rxjs: ^6.5.3 || ^7.5.0
-  checksum: 5ca6f5745ffe246a9e9e5941ed251faead1bc73ce959c9ac14e94420542b1e7c039b293037d9dc5cd5763fc46cdf260af476b932c1d599e62baad9ddf9f9b6c8
-  languageName: node
-  linkType: hard
-
-"@ngrx/operators@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@ngrx/operators@npm:19.0.1"
-  dependencies:
-    tslib: ^2.3.0
-  peerDependencies:
-    rxjs: ^6.5.3 || ^7.4.0
-  checksum: 7f4225e0313cfab0ad65c53f0312318aa3063ec4982c0151b062469ddd428e45473df83b0e6c014c8bd00be3fffe0b625724b3f215b10c47b9da10a1cf972b57
-  languageName: node
-  linkType: hard
-
-"@ngrx/store-devtools@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@ngrx/store-devtools@npm:19.0.1"
-  dependencies:
-    tslib: ^2.0.0
-  peerDependencies:
-    "@angular/core": ^19.0.0
-    "@ngrx/store": 19.0.1
-    rxjs: ^6.5.3 || ^7.5.0
-  checksum: 44987267939c1bfe0f560da9bd80cd323085a2d9e2a1b0a1cb0646ec4ba873718bb07959fd40e6e8684c6cd5dd0887c71381da22eaf20e65573f5420de2b7895
-  languageName: node
-  linkType: hard
-
-"@ngrx/store@npm:^19.0.1":
-  version: 19.0.1
-  resolution: "@ngrx/store@npm:19.0.1"
-  dependencies:
-    tslib: ^2.0.0
-  peerDependencies:
-    "@angular/core": ^19.0.0
-    rxjs: ^6.5.3 || ^7.5.0
-  checksum: 27123d155d079b0e56791d6b597001d7ddcc0dc70f197ffa4394d24da4ef208f523d12fe33367b368007397e6f25d2a21669fdf4039aca11df40bd18958bc042
-  languageName: node
-  linkType: hard
-
 "@ngtools/webpack@npm:19.2.4":
   version: 19.2.4
   resolution: "@ngtools/webpack@npm:19.2.4"
@@ -7380,10 +7331,6 @@ __metadata:
     "@angular/platform-browser": ^19.2.0
     "@angular/platform-browser-dynamic": ^19.2.0
     "@angular/router": ^19.2.0
-    "@ngrx/effects": ^19.0.1
-    "@ngrx/operators": ^19.0.1
-    "@ngrx/store": ^19.0.1
-    "@ngrx/store-devtools": ^19.0.1
     "@tailwindcss/postcss": ^4.0.17
     "@types/jasmine": ~5.1.0
     gh-pages: ^6.3.0

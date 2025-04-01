@@ -12,17 +12,17 @@ export class IndexedDbResource extends DomainResource {
 	private readonly POUCH_LIMIT_STORE = 'pouchLimit';
 	private readonly POUCH_USAGE_STORE = 'pouchUsage';
 
-    override fetchPouchLimitForDay(day: Date): Observable<number | null> {
+    override fetchPouchLimitForDay(day: Date): Observable<number> {
 		const dayString = day.toISOString().split('T')[0];
 
         return this.selectDb()
 			.pipe(
-				switchMap(db => new Observable<number | null>(observer => {
+				switchMap(db => new Observable<number>(observer => {
 					const transaction = db.transaction(this.POUCH_LIMIT_STORE, 'readonly');
 					const store = transaction.objectStore(this.POUCH_LIMIT_STORE);
 					const request = store.get(dayString) as IDBRequest<PouchLimitPerDayDao>;
 					request.onsuccess = () => {
-						observer.next(request.result?.limit ?? null);
+						observer.next(request.result?.limit);
 						observer.complete();
 					};
 					request.onerror = () => {

@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Repository } from '../../../api/Repository';
+import { Store } from '../../../api/Store';
 import { defer } from 'rxjs';
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { AppButtonComponent } from '../../common/app-button/AppButtonComponent';
@@ -15,19 +15,19 @@ import { setHostClasses } from '../../../util/setHostClasses';
 	templateUrl: 'HomeDaySelectorComponent.html'
 })
 export class HomeDaySelectorComponent {
-	readonly selectedDay$ = defer(() => this.repository.selectedDay$);
+	readonly selectedDay$ = defer(() => this.store.selectedDay$);
 
-	private readonly repository = inject(Repository);
+	private readonly store = inject(Store);
 
 	constructor() {
 		setHostClasses('w-full flex justify-between items-center');
 	}
 
 	previousDay(): void {
-		this.repository.previousDay().subscribe();
+		this.store.previousDay().subscribe();
 	}
 
 	nextDay(): void {
-		this.repository.nextDay().subscribe();
+		this.store.nextDay().subscribe();
 	}
 }

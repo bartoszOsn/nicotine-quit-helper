@@ -1,16 +1,13 @@
 import { inject, Injectable } from '@angular/core';
-import { Repository } from '../api/Repository';
+import { Store } from '../api/Store';
 import { BehaviorSubject, combineLatest, defer, map, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
 import { DayTimeState } from '../api/model/DayTimeState';
 import { PouchUsage } from '../api/model/PouchUsage';
-import { Store as NgRxStore } from '@ngrx/store';
-import { AppState } from './ngrx/AppState';
-import { fetchLimitForSelectedDay, fetchLimitForSelectedDaySuccess } from './ngrx/actions';
 
 @Injectable()
-export class DomainRepository extends Repository {
+export class DomainStore extends Store {
 	private readonly POUCH_USAGE_TIME = 30 * 60 * 1000;
 	private readonly ALERT_TIME = 2 * 1000;
 
@@ -155,13 +152,6 @@ export class DomainRepository extends Repository {
 
 	private readonly refreshPouchLimitForSelectedDaySubject = new BehaviorSubject<void>(void 0);
 	private readonly refreshPouchUsageForSelectedDaySubject = new BehaviorSubject<void>(void 0);
-
-	constructor() {
-		super();
-		const stateStore = inject(NgRxStore<AppState>);
-		stateStore.select(a => a);
-		stateStore.dispatch(fetchLimitForSelectedDay());
-	}
 
     override setSelectedDay(day: Date): Observable<void> {
 		this.selectedDay = day;
