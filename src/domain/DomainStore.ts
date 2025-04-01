@@ -62,12 +62,13 @@ export class DomainStore extends Store {
 				}
 
 				const pouchesLeft = limit - usage.length;
+				const timeStart = usage.length > 0 ? usage[usage.length - 1].dateTime : now;
 				const timeEnd = new Date(now);
 				timeEnd.setHours(23, 59, 59, 999);
 
 				return Array.from({ length: pouchesLeft }).map((_, i) => {
 					const t = (i + 1) / pouchesLeft;
-					const time = new Date(now.getTime() + t * (timeEnd.getTime() - now.getTime()));
+					const time = new Date(timeStart.getTime() + t * (timeEnd.getTime() - timeStart.getTime()));
 					return { dateTime: time };
 				})
 			})
