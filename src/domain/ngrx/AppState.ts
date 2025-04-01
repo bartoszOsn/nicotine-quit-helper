@@ -1,5 +1,7 @@
+import { Day } from '../../util/time/model/Day';
+
 export interface RootState {
-	readonly selectedDay: string;
+	readonly selectedDay: Day;
 	readonly pouchLimitForSelectedDay: number | null;
 }
 
