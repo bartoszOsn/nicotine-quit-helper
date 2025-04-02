@@ -11,6 +11,7 @@ function initialStateFactory(): RootState {
 	const domainConverter = inject(DomainConverter);
 
 	return {
-		selectedDay: domainConverter.dateToStringified(new Date())
+		selectedDay: domainConverter.dateToStringified(new Date()),
+		pouchLimitForSelectedDay: null
 	};
 }

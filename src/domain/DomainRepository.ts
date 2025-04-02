@@ -8,8 +8,8 @@ import { PouchUsage } from '../api/model/PouchUsage';
 import { Store } from '@ngrx/store';
 import { AppState } from './ngrx/AppState';
 import { DomainConverter } from './DomainConverter';
-import { selectSelectedDay } from './ngrx/selectors';
-import { nextDayAction, previousDayAction } from './ngrx/actions';
+import { selectPouchLimitForSelectedDay, selectSelectedDay } from './ngrx/selectors';
+import { nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './ngrx/actions';
 import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable()
@@ -22,12 +22,7 @@ export class DomainRepository extends Repository {
 
     override selectedDay$: Observable<Date> = this.store.select(selectSelectedDay)
 		.pipe(map(day => this.domainConverter.stringifiedToDate(day)));
-    override pouchLimitForSelectedDay$: Observable<number | null> = defer(() => combineLatest([
-		this.selectedDay$,
-		this.refreshPouchLimitForSelectedDaySubject.asObservable()
-	])).pipe(
-		switchMap(([day]) => this.domainResource.fetchPouchLimitForDay(day))
-	);
+    override pouchLimitForSelectedDay$: Observable<number | null> = this.store.select(selectPouchLimitForSelectedDay);
 
 	override readonly canEditLimitOnSelectedDay$: Observable<boolean> = defer(() => this.selectedDayTimeState$)
 		.pipe(
@@ -159,7 +154,6 @@ export class DomainRepository extends Repository {
 		})
 	);
 
-	private readonly refreshPouchLimitForSelectedDaySubject = new BehaviorSubject<void>(void 0);
 	private readonly refreshPouchUsageForSelectedDaySubject = new BehaviorSubject<void>(void 0);
 
 	override previousDay(): void {
@@ -169,12 +163,8 @@ export class DomainRepository extends Repository {
 		this.store.dispatch(nextDayAction());
 	}
 
-	override setLimitForSelectedDay(limit: number): Observable<void> {
-		return this.selectedDay$.pipe(
-			switchMap(selectedDay => this.domainResource.setPouchLimitForDay(selectedDay, limit)),
-			tap(() => this.refreshPouchLimitForSelectedDaySubject.next(void 0)),
-			map(() => void 0)
-		);
+	override setLimitForSelectedDay(limit: number): void {
+		this.store.dispatch(setLimitForSelectedDayAction({ limit }));
     }
     override usePouch(): Observable<void> {
 		const pouchUsage: PouchUsage = { dateTime: new Date() };

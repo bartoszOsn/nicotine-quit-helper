@@ -7,3 +7,8 @@ export const selectSelectedDay = createSelector(
 	selectRoot,
 	(state) => state.selectedDay
 );
+
+export const selectPouchLimitForSelectedDay = createSelector(
+	selectRoot,
+	(state) => state.pouchLimitForSelectedDay
+);

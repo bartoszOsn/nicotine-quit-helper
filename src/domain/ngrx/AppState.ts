@@ -5,5 +5,6 @@ export interface AppState {
 }
 
 export interface RootState {
-	selectedDay: StringifiedDate
+	selectedDay: StringifiedDate;
+	pouchLimitForSelectedDay: number | null;
 }

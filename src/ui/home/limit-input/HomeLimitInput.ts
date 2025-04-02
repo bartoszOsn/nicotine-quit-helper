@@ -24,6 +24,6 @@ export class HomeLimitInputComponent {
 	}
 
 	setLimit(event: Event): void {
-		this.store.setLimitForSelectedDay((event.currentTarget as HTMLInputElement).valueAsNumber).subscribe();
+		this.store.setLimitForSelectedDay((event.currentTarget as HTMLInputElement).valueAsNumber);
 	}
 }
