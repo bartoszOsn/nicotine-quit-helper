@@ -15,9 +15,8 @@ export abstract class Repository {
 	abstract readonly pouchesLeft$: Observable<number>;
 	abstract readonly currentPouchState$: Observable<CurrentPouchState>;
 
-	abstract setSelectedDay(day: Date): Observable<void>;
-	abstract previousDay(): Observable<void>;
-	abstract nextDay(): Observable<void>;
+	abstract previousDay(): void;
+	abstract nextDay(): void;
 
 	abstract setLimitForSelectedDay(limit: number): Observable<void>;
 	abstract usePouch(): Observable<void>;

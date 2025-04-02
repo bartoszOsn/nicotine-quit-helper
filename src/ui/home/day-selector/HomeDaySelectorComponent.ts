@@ -24,10 +24,10 @@ export class HomeDaySelectorComponent {
 	}
 
 	previousDay(): void {
-		this.store.previousDay().subscribe();
+		this.store.previousDay();
 	}
 
 	nextDay(): void {
-		this.store.nextDay().subscribe();
+		this.store.nextDay();
 	}
 }
