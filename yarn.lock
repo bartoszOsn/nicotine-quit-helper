@@ -2375,6 +2375,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ngrx/store-devtools@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "@ngrx/store-devtools@npm:19.1.0"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    "@angular/core": ^19.0.0
+    "@ngrx/store": 19.1.0
+    rxjs: ^6.5.3 || ^7.5.0
+  checksum: 3e28dc4c74f0b0a672d7b789d7e2f8a9db96436b6ba82eb37e6b1cbb32b94dcdd759768f3ed79613f3f6e82bae2e835b1c091ecbfbc4ae3edeb918499b9a9ab5
+  languageName: node
+  linkType: hard
+
 "@ngrx/store@npm:^19.1.0":
   version: 19.1.0
   resolution: "@ngrx/store@npm:19.1.0"
@@ -7370,6 +7383,7 @@ __metadata:
     "@ngrx/effects": ^19.1.0
     "@ngrx/operators": ^19.1.0
     "@ngrx/store": ^19.1.0
+    "@ngrx/store-devtools": ^19.1.0
     "@tailwindcss/postcss": ^4.0.17
     "@types/jasmine": ~5.1.0
     gh-pages: ^6.3.0
