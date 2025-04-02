@@ -2351,6 +2351,42 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@ngrx/effects@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "@ngrx/effects@npm:19.1.0"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    "@angular/core": ^19.0.0
+    "@ngrx/store": 19.1.0
+    rxjs: ^6.5.3 || ^7.5.0
+  checksum: c1867d91873a05360fb5e728e53ca1a70c9a051269a458bc74b5607f5e6dc5651c2df02e21fe058f567728e3029c48694f90b42a15504c66e93d860401afe313
+  languageName: node
+  linkType: hard
+
+"@ngrx/operators@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "@ngrx/operators@npm:19.1.0"
+  dependencies:
+    tslib: ^2.3.0
+  peerDependencies:
+    rxjs: ^6.5.3 || ^7.4.0
+  checksum: ec83db97ef7d7ec5be9479b090a46383010848854a4857b02a52843eca225d851f47e70a771e03450d4c3938c29d5f2094b75716856e79671bfda8f0f9e9317f
+  languageName: node
+  linkType: hard
+
+"@ngrx/store@npm:^19.1.0":
+  version: 19.1.0
+  resolution: "@ngrx/store@npm:19.1.0"
+  dependencies:
+    tslib: ^2.0.0
+  peerDependencies:
+    "@angular/core": ^19.0.0
+    rxjs: ^6.5.3 || ^7.5.0
+  checksum: 65a0658d7681c6d582d1c6702fba07b068033cd933e4d24f6f920ca4517225c89706dd1037d852cf3f6146d0105784f050940d4092954da69413eb7f9309f75d
+  languageName: node
+  linkType: hard
+
 "@ngtools/webpack@npm:19.2.4":
   version: 19.2.4
   resolution: "@ngtools/webpack@npm:19.2.4"
@@ -7331,6 +7367,9 @@ __metadata:
     "@angular/platform-browser": ^19.2.0
     "@angular/platform-browser-dynamic": ^19.2.0
     "@angular/router": ^19.2.0
+    "@ngrx/effects": ^19.1.0
+    "@ngrx/operators": ^19.1.0
+    "@ngrx/store": ^19.1.0
     "@tailwindcss/postcss": ^4.0.17
     "@types/jasmine": ~5.1.0
     gh-pages: ^6.3.0
