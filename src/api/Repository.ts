@@ -3,7 +3,7 @@ import { CurrentPouchState } from './model/CurrentPouchState';
 import { DayTimeState } from './model/DayTimeState';
 import { PouchUsage } from './model/PouchUsage';
 
-export abstract class Store {
+export abstract class Repository {
 	abstract readonly selectedDay$: Observable<Date>;
 	abstract readonly pouchLimitForSelectedDay$: Observable<number | null>;
 	abstract readonly canEditLimitOnSelectedDay$: Observable<boolean>;

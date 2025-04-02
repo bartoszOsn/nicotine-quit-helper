@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { HomeDaySelectorComponent } from './day-selector/HomeDaySelectorComponent';
-import { Store } from '../../api/Store';
+import { Repository } from '../../api/Repository';
 import { AsyncPipe } from '@angular/common';
 import { DayTimeState } from '../../api/model/DayTimeState';
 import { PastViewComponent } from './views/past-view/PastViewComponent';
@@ -23,7 +23,7 @@ import { AppHeaderComponent } from '../common/app-header/AppHeaderComponent';
 	]
 })
 export class HomeRootComponent {
-	private readonly store = inject(Store);
+	private readonly store = inject(Repository);
 
 	public readonly selectedDayTimeState$ = this.store.selectedDayTimeState$;
 

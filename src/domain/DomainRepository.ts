@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Store } from '../api/Store';
+import { Repository } from '../api/Repository';
 import { BehaviorSubject, combineLatest, defer, map, Observable, of, switchMap, tap, timer } from 'rxjs';
 import { CurrentPouchState } from '../api/model/CurrentPouchState';
 import { DomainResource } from './DomainResource';
@@ -7,7 +7,7 @@ import { DayTimeState } from '../api/model/DayTimeState';
 import { PouchUsage } from '../api/model/PouchUsage';
 
 @Injectable()
-export class DomainStore extends Store {
+export class DomainRepository extends Repository {
 	private readonly POUCH_USAGE_TIME = 30 * 60 * 1000;
 	private readonly ALERT_TIME = 2 * 1000;
 
