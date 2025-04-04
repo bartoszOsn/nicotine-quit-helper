@@ -7,11 +7,13 @@ import { REDUCER_TOKEN } from './ngrx/REDUCER_TOKEN';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideEffects } from '@ngrx/effects';
 import { Effects } from './ngrx/Effects';
+import { DomainService } from './DomainService';
 
 export function provideDomain(): EnvironmentProviders {
 	return makeEnvironmentProviders([
 		{ provide: Repository, useClass: DomainRepository },
 		DomainConverter,
+		DomainService,
 		provideStore(REDUCER_TOKEN),
 		provideEffects(Effects),
 		provideStoreDevtools()
