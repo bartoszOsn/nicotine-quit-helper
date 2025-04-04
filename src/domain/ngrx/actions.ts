@@ -25,3 +25,8 @@ export const addPouchUsageAction = createAction(
 	`${PREFIX} Add Pouch Usage`,
 	props<{ usage: PouchUsage }>()
 );
+
+export const fetchLastPouchUsageSuccessAction = createAction(
+	`${PREFIX} Fetch Last Pouch Usage Success`,
+	props<{ usage: PouchUsage | null }>()
+);

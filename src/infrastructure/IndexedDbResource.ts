@@ -75,7 +75,33 @@ export class IndexedDbResource extends DomainResource {
 				}))
 			);
     }
-    override addPouchUsageForDay(usage: PouchUsage): Observable<void> {
+
+	override fetchLastPouchUsage(): Observable<PouchUsage | null> {
+		return this.selectDb()
+			.pipe(
+				switchMap(db => new Observable<PouchUsage | null>(observer => {
+					const transaction = db.transaction(this.POUCH_USAGE_STORE, 'readonly');
+					const store = transaction.objectStore(this.POUCH_USAGE_STORE);
+					const request = store.getAll() as IDBRequest<Array<PouchUsageDao>>;
+					request.onsuccess = () => {
+						const pouchUsages = this.daoToPoachUsageArray(request.result);
+
+						if (pouchUsages.length === 0) {
+							observer.next(null);
+						} else {
+							observer.next(pouchUsages.sort((a, b) => b.dateTime.getTime() - a.dateTime.getTime())[0]);
+						}
+						observer.complete();
+					};
+					request.onerror = () => {
+						observer.error(request.error);
+						observer.complete();
+					};
+				}))
+			);
+	}
+
+	override addPouchUsageForDay(usage: PouchUsage): Observable<void> {
 		return this.selectDb()
 			.pipe(
 				switchMap(db => new Observable<void>(observer => {

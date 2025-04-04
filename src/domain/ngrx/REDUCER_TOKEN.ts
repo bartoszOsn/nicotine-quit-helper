@@ -2,6 +2,7 @@ import { inject, InjectionToken } from '@angular/core';
 import { INITIAL_STATE_TOKEN } from './INITIAL_STATE_TOKEN';
 import { createReducer, on } from '@ngrx/store';
 import {
+	fetchLastPouchUsageSuccessAction,
 	fetchLimitForSelectedDaySuccessAction,
 	fetchPouchUsagesForSelectedDaySuccessAction,
 	nextDayAction,
@@ -50,6 +51,11 @@ function reducerFactory() {
 		on(fetchPouchUsagesForSelectedDaySuccessAction, (state, action) => ({
 			...state,
 			pouchesUsage: action.usages
+		})),
+
+		on(fetchLastPouchUsageSuccessAction, (state, action) => ({
+			...state,
+			lastPouchUsage: action.usage
 		}))
 	);
 

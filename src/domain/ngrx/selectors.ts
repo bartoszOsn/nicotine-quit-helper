@@ -17,3 +17,8 @@ export const selectPouchUsage = createSelector(
 	selectRoot,
 	(state) => state.pouchesUsage
 );
+
+export const selectLastPouchUsage = createSelector(
+	selectRoot,
+	(state) => state.lastPouchUsage
+);

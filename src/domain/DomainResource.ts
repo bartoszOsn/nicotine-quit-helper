@@ -6,5 +6,6 @@ export abstract class DomainResource {
 	abstract setPouchLimitForDay(day: Date, limit: number): Observable<void>;
 
 	abstract fetchPouchUsageForDay(day: Date): Observable<Array<PouchUsage>>;
+	abstract fetchLastPouchUsage(): Observable<PouchUsage | null>;
 	abstract addPouchUsageForDay(usage: PouchUsage): Observable<void>;
 }

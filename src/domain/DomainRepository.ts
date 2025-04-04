@@ -8,7 +8,7 @@ import { PouchUsage } from '../api/model/PouchUsage';
 import { Store } from '@ngrx/store';
 import { AppState } from './ngrx/AppState';
 import { DomainConverter } from './DomainConverter';
-import { selectPouchLimitForSelectedDay, selectPouchUsage, selectSelectedDay } from './ngrx/selectors';
+import { selectLastPouchUsage, selectPouchLimitForSelectedDay, selectPouchUsage, selectSelectedDay } from './ngrx/selectors';
 import { addPouchUsageAction, nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './ngrx/actions';
 import { concatLatestFrom } from '@ngrx/operators';
 
@@ -74,9 +74,7 @@ export class DomainRepository extends Repository {
 		);
 
 	override showSuggestedPouchUsage$: Observable<boolean> = defer(() => this.selectedDayTimeState$)
-		.pipe(
-			map(state => state === DayTimeState.PRESENT)
-		)
+		.pipe(map(state => state === DayTimeState.PRESENT))
 
 	override readonly pouchesLeft$: Observable<number> = combineLatest([
 		this.pouchLimitForSelectedDay$,
@@ -98,21 +96,9 @@ export class DomainRepository extends Repository {
 
 	override readonly currentPouchState$: Observable<CurrentPouchState> = combineLatest([
 		defer(() => this.now$),
-		this.pouchesUsage$
+		this.store.select(selectLastPouchUsage)
 	])
 		.pipe(
-			concatLatestFrom(() => this.selectedDay$),
-			switchMap(([[now, usages], selectedDay]): Observable<[Date, PouchUsage | null]> => {
-				if (usages.length > 0) {
-					return of([now, usages[usages.length - 1]]);
-				}
-
-				if (now.getTime() - selectedDay.getTime() < this.POUCH_USAGE_TIME + this.ALERT_TIME) {
-					return this.lastPouchUsageOfPreviousDay$.pipe(map(usage => [now, usage]));
-				}
-
-				return of([now, null]);
-			}),
 			map(([now, lastPouch]) => {
 				if (lastPouch === null) {
 					return { type: 'no-pouch' };
@@ -137,16 +123,6 @@ export class DomainRepository extends Repository {
 	private readonly domainResource = inject(DomainResource);
 
 	private now$ = timer(0, 1000).pipe(map(() => new Date()));
-	private lastPouchUsageOfPreviousDay$: Observable<PouchUsage | null> = this.selectedDay$.pipe(
-		map(day => new Date(day.getTime() - 24 * 60 * 60 * 1000)),
-		switchMap(day => this.domainResource.fetchPouchUsageForDay(day)),
-		map(usages => {
-			if (usages.length === 0) {
-				return null;
-			}
-			return usages[usages.length - 1];
-		})
-	);
 
 	override previousDay(): void {
 		this.store.dispatch(previousDayAction());
@@ -162,5 +138,4 @@ export class DomainRepository extends Repository {
 		const usage: PouchUsage = { dateTime: new Date() };
         this.store.dispatch(addPouchUsageAction({ usage }));
     }
-
 }

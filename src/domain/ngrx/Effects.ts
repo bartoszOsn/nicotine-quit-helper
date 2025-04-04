@@ -2,8 +2,11 @@ import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, rootEffectsInit } from '@ngrx/effects';
 import {
 	addPouchUsageAction,
+	fetchLastPouchUsageSuccessAction,
 	fetchLimitForSelectedDayAction,
-	fetchLimitForSelectedDaySuccessAction, fetchPouchUsagesForSelectedDayAction, fetchPouchUsagesForSelectedDaySuccessAction,
+	fetchLimitForSelectedDaySuccessAction,
+	fetchPouchUsagesForSelectedDayAction,
+	fetchPouchUsagesForSelectedDaySuccessAction,
 	nextDayAction,
 	previousDayAction,
 	setLimitForSelectedDayAction
@@ -69,6 +72,16 @@ export class Effects {
 				return this.domainResource.addPouchUsageForDay(action.usage);
 			}),
 			map(() => fetchPouchUsagesForSelectedDayAction())
+		);
+	});
+
+	readonly fetchLastPouchUsage$ = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(fetchPouchUsagesForSelectedDaySuccessAction),
+			switchMap(() => {
+				return this.domainResource.fetchLastPouchUsage();
+			}),
+			map(usage => fetchLastPouchUsageSuccessAction({ usage }))
 		);
 	});
 }
