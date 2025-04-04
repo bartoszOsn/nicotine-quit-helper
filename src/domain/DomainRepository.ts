@@ -6,7 +6,6 @@ import { DayTimeState } from '../api/model/DayTimeState';
 import { PouchUsage } from '../api/model/PouchUsage';
 import { Store } from '@ngrx/store';
 import { AppState } from './ngrx/AppState';
-import { DomainConverter } from './DomainConverter';
 import { selectLastPouchUsage, selectPouchLimitForSelectedDay, selectPouchUsage, selectSelectedDay } from './ngrx/selectors';
 import { addPouchUsageAction, nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './ngrx/actions';
 import { DomainService } from './DomainService';
@@ -14,11 +13,9 @@ import { DomainService } from './DomainService';
 @Injectable()
 export class DomainRepository extends Repository {
 	private readonly store = inject(Store<AppState>);
-	private readonly domainConverter = inject(DomainConverter);
 	private readonly domainService = inject(DomainService);
 
-    override selectedDay$: Observable<Date> = this.store.select(selectSelectedDay)
-		.pipe(map(day => this.domainConverter.stringifiedToDate(day)));
+    override selectedDay$: Observable<Date> = this.store.select(selectSelectedDay);
     override pouchLimitForSelectedDay$: Observable<number | null> = this.store.select(selectPouchLimitForSelectedDay);
 	override readonly pouchesUsage$: Observable<Array<PouchUsage>> = this.store.select(selectPouchUsage);
 

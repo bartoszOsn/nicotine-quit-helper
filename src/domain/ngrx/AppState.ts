@@ -1,4 +1,3 @@
-import { StringifiedDate } from '../model/StringifiedDate';
 import { PouchUsage } from '../../api/model/PouchUsage';
 
 export interface AppState {
@@ -6,7 +5,7 @@ export interface AppState {
 }
 
 export interface RootState {
-	selectedDay: StringifiedDate;
+	selectedDay: Date;
 	pouchLimitForSelectedDay: number | null;
 	pouchesUsage: Array<PouchUsage>;
 	lastPouchUsage: PouchUsage | null;

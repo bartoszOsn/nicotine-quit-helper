@@ -1,1 +1,0 @@
-export type StringifiedDate = string & { __brand: 'StringifiedDate' };
