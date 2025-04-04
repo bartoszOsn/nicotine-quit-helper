@@ -12,6 +12,7 @@ function initialStateFactory(): RootState {
 
 	return {
 		selectedDay: domainConverter.dateToStringified(new Date()),
-		pouchLimitForSelectedDay: null
+		pouchLimitForSelectedDay: null,
+		pouchesUsage: []
 	};
 }

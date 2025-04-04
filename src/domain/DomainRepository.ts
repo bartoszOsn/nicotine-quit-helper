@@ -8,8 +8,8 @@ import { PouchUsage } from '../api/model/PouchUsage';
 import { Store } from '@ngrx/store';
 import { AppState } from './ngrx/AppState';
 import { DomainConverter } from './DomainConverter';
-import { selectPouchLimitForSelectedDay, selectSelectedDay } from './ngrx/selectors';
-import { nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './ngrx/actions';
+import { selectPouchLimitForSelectedDay, selectPouchUsage, selectSelectedDay } from './ngrx/selectors';
+import { addPouchUsageAction, nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './ngrx/actions';
 import { concatLatestFrom } from '@ngrx/operators';
 
 @Injectable()
@@ -43,13 +43,7 @@ export class DomainRepository extends Repository {
 			})
 		)
 
-    override readonly pouchesUsage$: Observable<Array<PouchUsage>> = combineLatest([
-		this.selectedDay$,
-		defer(() => this.refreshPouchUsageForSelectedDaySubject)
-	])
-		.pipe(
-			switchMap(([day]) => this.domainResource.fetchPouchUsageForDay(day))
-		);
+    override readonly pouchesUsage$: Observable<Array<PouchUsage>> = this.store.select(selectPouchUsage);
 
 	override readonly suggestedPouchUsage$: Observable<Array<PouchUsage>> = combineLatest([
 		this.pouchesUsage$,
@@ -154,8 +148,6 @@ export class DomainRepository extends Repository {
 		})
 	);
 
-	private readonly refreshPouchUsageForSelectedDaySubject = new BehaviorSubject<void>(void 0);
-
 	override previousDay(): void {
 		this.store.dispatch(previousDayAction());
 	}
@@ -166,11 +158,9 @@ export class DomainRepository extends Repository {
 	override setLimitForSelectedDay(limit: number): void {
 		this.store.dispatch(setLimitForSelectedDayAction({ limit }));
     }
-    override usePouch(): Observable<void> {
-		const pouchUsage: PouchUsage = { dateTime: new Date() };
-        return this.domainResource.addPouchUsageForDay(pouchUsage).pipe(
-			tap(() => this.refreshPouchUsageForSelectedDaySubject.next(void 0))
-		);
+    override usePouch(): void {
+		const usage: PouchUsage = { dateTime: new Date() };
+        this.store.dispatch(addPouchUsageAction({ usage }));
     }
 
 }

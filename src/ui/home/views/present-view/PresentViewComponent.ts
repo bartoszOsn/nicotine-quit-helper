@@ -19,6 +19,6 @@ export class PresentViewComponent {
 	private readonly store = inject(Repository);
 
 	usePouch(): void {
-		this.store.usePouch().subscribe();
+		this.store.usePouch();
 	}
 }

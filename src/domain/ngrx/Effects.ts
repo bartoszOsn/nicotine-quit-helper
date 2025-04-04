@@ -1,8 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, rootEffectsInit } from '@ngrx/effects';
 import {
+	addPouchUsageAction,
 	fetchLimitForSelectedDayAction,
-	fetchLimitForSelectedDaySuccessAction,
+	fetchLimitForSelectedDaySuccessAction, fetchPouchUsagesForSelectedDayAction, fetchPouchUsagesForSelectedDaySuccessAction,
 	nextDayAction,
 	previousDayAction,
 	setLimitForSelectedDayAction
@@ -46,5 +47,28 @@ export class Effects {
 			}),
 			map(() => fetchLimitForSelectedDayAction())
 		)
-	})
+	});
+
+	readonly fetchPouchUsagesForSelectedDay$ = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(rootEffectsInit, fetchPouchUsagesForSelectedDayAction, nextDayAction, previousDayAction),
+			concatLatestFrom(() => this.store.select(selectSelectedDay)),
+			switchMap(([_, selectedDayStringified]) => {
+				const selectedDay = this.domainConverter.stringifiedToDate(selectedDayStringified);
+
+				return this.domainResource.fetchPouchUsageForDay(selectedDay);
+			}),
+			map(usages => fetchPouchUsagesForSelectedDaySuccessAction({ usages }))
+		);
+	});
+
+	readonly addPouchUsage$ = createEffect(() => {
+		return this.actions$.pipe(
+			ofType(addPouchUsageAction),
+			switchMap((action) => {
+				return this.domainResource.addPouchUsageForDay(action.usage);
+			}),
+			map(() => fetchPouchUsagesForSelectedDayAction())
+		);
+	});
 }

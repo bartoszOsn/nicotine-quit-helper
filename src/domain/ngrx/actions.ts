@@ -1,4 +1,5 @@
 import { createAction, props } from '@ngrx/store';
+import { PouchUsage } from '../../api/model/PouchUsage';
 
 const PREFIX = '[ROOT]';
 
@@ -13,4 +14,14 @@ export const fetchLimitForSelectedDaySuccessAction = createAction(
 export const setLimitForSelectedDayAction = createAction(
 	`${PREFIX} Set Limit For Selected Day`,
 	props<{ limit: number }>()
+);
+
+export const fetchPouchUsagesForSelectedDayAction = createAction(`${PREFIX} Fetch Pouch Usage For Selected Day`);
+export const fetchPouchUsagesForSelectedDaySuccessAction = createAction(
+	`${PREFIX} Fetch Pouch Usage For Selected Day Success`,
+	props<{ usages: Array<PouchUsage> }>()
+);
+export const addPouchUsageAction = createAction(
+	`${PREFIX} Add Pouch Usage`,
+	props<{ usage: PouchUsage }>()
 );

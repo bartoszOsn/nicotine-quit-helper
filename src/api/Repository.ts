@@ -19,5 +19,5 @@ export abstract class Repository {
 	abstract nextDay(): void;
 
 	abstract setLimitForSelectedDay(limit: number): void;
-	abstract usePouch(): Observable<void>;
+	abstract usePouch(): void;
 }

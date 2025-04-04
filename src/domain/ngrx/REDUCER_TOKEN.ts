@@ -1,7 +1,13 @@
 import { inject, InjectionToken } from '@angular/core';
 import { INITIAL_STATE_TOKEN } from './INITIAL_STATE_TOKEN';
 import { createReducer, on } from '@ngrx/store';
-import { fetchLimitForSelectedDaySuccessAction, nextDayAction, previousDayAction, setLimitForSelectedDayAction } from './actions';
+import {
+	fetchLimitForSelectedDaySuccessAction,
+	fetchPouchUsagesForSelectedDaySuccessAction,
+	nextDayAction,
+	previousDayAction,
+	setLimitForSelectedDayAction
+} from './actions';
 import { DomainConverter } from '../DomainConverter';
 
 const DAY_IN_MILLISECONDS = 24 * 60 * 60 * 1000;
@@ -40,6 +46,11 @@ function reducerFactory() {
 			...state,
 			pouchLimitForSelectedDay: action.limit,
 		})),
+
+		on(fetchPouchUsagesForSelectedDaySuccessAction, (state, action) => ({
+			...state,
+			pouchesUsage: action.usages
+		}))
 	);
 
 	return { ROOT: rootReducer }
